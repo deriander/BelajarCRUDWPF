@@ -9,19 +9,23 @@ using System.Threading.Tasks;
 namespace BelajarCRUDWPF.Model
 {
     [Table("TB_M_Supplier")]
-    public class supplier
+    public class Supplier
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
 
-        public supplier() { }
+        public Supplier() { }
 
-        public supplier(string name, string address)
+        public Supplier(string name, string address, string email, string password)
         {
             this.Name = name;
             this.Address = address;
+            this.Email = email;
+            this.Password = password;
         }
     }
 }

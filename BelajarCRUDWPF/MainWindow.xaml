@@ -3,27 +3,82 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:BelajarCRUDWPF"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        mc:Ignorable="d" Height="600" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <Storyboard x:Key="CloseMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="250"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OpenMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="250"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
+            <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpen">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
+        </EventTrigger>
+    </Window.Triggers>
     <Grid>
-        <Label Content="Id" HorizontalAlignment="Left" Margin="150,20,0,0" VerticalAlignment="Top"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="150,65,0,0" VerticalAlignment="Top"/>
-        <Label Content="Address" HorizontalAlignment="Left" Margin="150,111,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtId" HorizontalAlignment="Left" Height="23" Margin="236,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="txtId_TextChanged" IsEnabled="False"/>
-        <TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" Margin="236,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="txtName_TextChanged"/>
-        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Height="23" Margin="236,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="txtAddress_TextChanged"/>
-        <Button x:Name="btnInsert" Content="Insert" HorizontalAlignment="Left" Margin="218,161,0,0" VerticalAlignment="Top" Width="75" Click="btnInsert_Click"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="111,161,0,0" VerticalAlignment="Top" Width="75" Click="btnUpdate_Click"/>
-        <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="328,161,0,0" VerticalAlignment="Top" Width="75" Click="btnDelete_Click"/>
-        <DataGrid x:Name="tblSupplier" HorizontalAlignment="Left" Height="110" 
-                  SelectionChanged="tblSupplier_SelectionChanged" AutoGenerateColumns="False" 
-                  IsReadOnly="True" Margin="111,209,0,0" VerticalAlignment="Top" Width="292">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid x:Name="GridBackground" Background="LightGray" Opacity="0"/>
+        <Grid>
+            <Grid x:Name="GridPrincipal"/>
+        </Grid>
+        <Button x:Name="ButtonOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
+            <materialDesign:PackIcon Kind="Menu" Foreground="Navy"/>
+        </Button>
+        <Grid x:Name="GridMenu" Width="250" HorizontalAlignment="Left" Margin="-250 0 0 0" Background="White" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <StackPanel>
+                <Image Height="140" Source="Assets/building.jpg" Stretch="Fill"/>
+                <ListView x:Name="ListViewMenu" SelectionChanged="ListViewMenu_SelectionChanged" Foreground="Navy" FontFamily="Champagne &amp; Limousines" FontSize="18">
+                    <ListViewItem x:Name="LVISupplier" Height="45" Padding="0">
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <materialDesign:PackIcon Kind="Edit" Width="20" Height="20" Foreground="#FFE6A701" Margin="5" VerticalAlignment="Center"/>
+                            <TextBlock Text="Supplier" Margin="10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="LVIItem" Height="45" Padding="0">
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <materialDesign:PackIcon Kind="Store" Width="20" Height="20" Foreground="Green" Margin="5" VerticalAlignment="Center"/>
+                            <TextBlock Text="Item" Margin="10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="LVILogout" Height="45" Padding="0">
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <materialDesign:PackIcon Kind="Logout" Width="20" Height="20" Foreground="Black" Margin="5" VerticalAlignment="Center"/>
+                            <TextBlock Text="Logout" Margin="10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+            <Button x:Name="ButtonClose" Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
+                <materialDesign:PackIcon Kind="Close"/>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

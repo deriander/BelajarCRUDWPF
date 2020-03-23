@@ -1,8 +1,6 @@
-﻿using BelajarCRUDWPF.Model;
-using BelajarCRUDWPF.MyContext;
+﻿using BelajarCRUDWPF.MyContext;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,101 +11,58 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace BelajarCRUDWPF
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MaterialDesignMainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        myContext con = new myContext();
-        public MainWindow()
+        public MainWindow(string role)
         {
             InitializeComponent();
-            tblSupplier.ItemsSource = con.Suppliers.ToList();
+            Access(role);
         }
 
-        private void tblSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void Access(string role)
         {
-            var data = tblSupplier.SelectedItem;
-            string id = (tblSupplier.SelectedCells[0].Column.GetCellContent(data) as TextBlock).Text;
-            txtId.Text = id;
-            string name = (tblSupplier.SelectedCells[1].Column.GetCellContent(data) as TextBlock).Text;
-            txtName.Text = name;
-            string address = (tblSupplier.SelectedCells[2].Column.GetCellContent(data) as TextBlock).Text;
-            txtAddress.Text = address;
-        }
-
-        private void btnInsert_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtName.Text == "" || txtAddress.Text == "")
+            if (role == "Member")
             {
-                MessageBox.Show("Please fill name field and address field");
+                LVISupplier.Visibility = Visibility.Hidden;
+                LVIItem.IsSelected = true;
             }
-            else
+            else if (role == "Admin")
             {
-                var input = new supplier(txtName.Text, txtAddress.Text);
-                con.Suppliers.Add(input);
-                var insert = con.SaveChanges();
-                MessageBox.Show(insert + "Has been inserted");
-                txtName.Text = "";
-                txtAddress.Text = "";
-                txtId.Text = "";
-                tblSupplier.ItemsSource = con.Suppliers.ToList();
+                LVISupplier.IsSelected = true; 
             }
         }
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (txtName.Text == "" || txtAddress.Text == "" || txtId.Text == "")
+            int index = ListViewMenu.SelectedIndex;
+
+            switch (index)
             {
-                MessageBox.Show("Please fill all field");
+                case 0:
+                    GridPrincipal.Children.Clear();
+                    GridPrincipal.Children.Add(new UserControlSupplier());
+                    break;
+
+                case 1:
+                    GridPrincipal.Children.Clear();
+                    GridPrincipal.Children.Add(new UserControlItem());
+                    break;
+                case 2:
+                    if (MessageBox.Show("Are you sure?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        LoginWindow loginWindow = new LoginWindow();
+                        loginWindow.Show();
+                        this.Close();
+                    }
+                    break;
             }
-            else
-            {
-                int supply_id = Convert.ToInt32(txtId.Text);
-                var cek_supply_id = con.Suppliers.Where(s => s.Id == supply_id).FirstOrDefault();
-                cek_supply_id.Name = txtName.Text;
-                cek_supply_id.Address = txtAddress.Text;
-                var update = con.SaveChanges();
-                MessageBox.Show(update + " has been updated");
-                txtId.Text = "";
-                txtName.Text = "";
-                txtAddress.Text = "";
-                tblSupplier.ItemsSource = con.Suppliers.ToList();
-            }            
-        }
-
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            int delete_supply = Convert.ToInt32(txtId.Text);
-            var cek_supply_id = con.Suppliers.Where(s => s.Id == delete_supply).FirstOrDefault();
-            con.Entry(cek_supply_id).State = EntityState.Deleted;
-            //con.Suppliers.Remove(cek_supply_id);
-            var delete = con.SaveChanges();
-            MessageBox.Show(delete + " has been deleted");
-            txtId.Text = "";
-            txtName.Text = "";
-            txtAddress.Text = "";
-            tblSupplier.ItemsSource = con.Suppliers.ToList();
-        }
-
-        private void txtId_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void txtName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void txtAddress_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

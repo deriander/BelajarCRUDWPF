@@ -12,7 +12,8 @@ namespace BelajarCRUDWPF.MyContext
     public class myContext : DbContext
     {
         public myContext() : base("BelajarCRUDWPF") { }
-        public DbSet<supplier> Suppliers { get; set; }
-        public DbSet<item> Items { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }

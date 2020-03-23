@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,26 +7,25 @@ using System.Threading.Tasks;
 namespace BelajarCRUDWPF.Model
 {
     [Table("TB_M_Item")]
-    public class item
+    public class Item
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
         public int Stock { get; set; }
-        public supplier Supplier { get; set; } //foreign key
+        public Supplier Supplier { get; set; } //foreign key
 
-        public item() { }
+        public Item() { }
 
-        public item(string name, int price, int stock, supplier supplier)
+        public Item(string name, int price, int stock, Supplier supplier)
         {
             this.Name = name;
             this.Price = price;
             this.Stock = stock;
             this.Supplier = supplier;
-
-
         }
 
     }
 }
+

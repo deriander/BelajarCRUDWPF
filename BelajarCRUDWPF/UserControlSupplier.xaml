@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="BelajarCRUDWPF.UserControlSupplier"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BelajarCRUDWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="571" d:DesignWidth="994">
+    <Grid>
+        <TextBox x:Name="txtIdSupplier" TextChanged="txtIdSupplier_TextChanged" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="104,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
+        <TextBox x:Name="txtNameSupplier" TextChanged="txtNameSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,267,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
+        <TextBox x:Name="txtAddressSupplier" TextChanged="txtAddressSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,339,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
+        <TextBox x:Name="txtEmailSupplier" TextChanged="txtEmailSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,413,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
+        <Button x:Name="btnDeleteSupplier" Click="btnDeleteSupplier_Click" Content="Delete" HorizontalAlignment="Left" Margin="466,462,0,0" VerticalAlignment="Top" Width="429"/>
+        <Button x:Name="btnUpdateSupplier" Click="btnUpdateSupplier_Click" Content="Update" HorizontalAlignment="Left" Margin="284,462,0,0" VerticalAlignment="Top" Width="140"/>
+        <Button x:Name="btnInsertSupplier" Click="btnInsertSupplier_Click" Content="Insert" HorizontalAlignment="Left" Margin="100,462,0,0" VerticalAlignment="Top" Width="140"/>
+        <DataGrid x:Name="tblSupplier" SelectionChanged="tblSupplier_SelectionChanged" 
+                  SelectedItem="selectGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                  HorizontalAlignment="Left" Height="365" Margin="466,76,0,0" VerticalAlignment="Top" Width="429">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Id" HorizontalAlignment="Left" Margin="104,169,0,0" VerticalAlignment="Top"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="100,238,0,0" VerticalAlignment="Top"/>
+        <Label Content="Address" HorizontalAlignment="Left" Margin="102,310,0,0" VerticalAlignment="Top"/>
+        <Label Content="Email" HorizontalAlignment="Left" Margin="104,385,0,0" VerticalAlignment="Top"/>
+        <Label Content="Admin" HorizontalAlignment="Left" Margin="102,76,0,0" VerticalAlignment="Top" FontSize="48"/>
+    </Grid>
+</UserControl>
