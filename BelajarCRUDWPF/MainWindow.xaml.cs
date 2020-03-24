@@ -30,7 +30,7 @@ namespace BelajarCRUDWPF
         {
             if (role == "Member")
             {
-                LVISupplier.Visibility = Visibility.Hidden;
+                LVISupplier.Visibility = Visibility.Collapsed;
                 LVIItem.IsSelected = true;
             }
             else if (role == "Admin")

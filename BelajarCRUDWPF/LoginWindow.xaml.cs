@@ -42,7 +42,7 @@ namespace BelajarCRUDWPF
             }
             else
             {
-                if (dataLogin.Email == txtEmailLogin.Text && dataLogin.Password == txtPasswordLogin.Text)
+                if (dataLogin.Email == txtEmailLogin.Text && dataLogin.Password == txtPasswordLogin.Password.ToString())
                 {
                     var dataRole = con.Roles.Where(s => s.Supplier.Id == dataLogin.Id).FirstOrDefault();
                     MainWindow mainWindow = new MainWindow(dataRole.Name);

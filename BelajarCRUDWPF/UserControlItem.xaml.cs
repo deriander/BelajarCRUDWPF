@@ -54,7 +54,15 @@ namespace BelajarCRUDWPF
 
         private void cbSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            idSup = Convert.ToInt32(cbSupplier.SelectedValue.ToString());
+            try
+            {
+                idSup = Convert.ToInt32(cbSupplier.SelectedValue.ToString());
+            }
+            catch
+            {
+
+            }
+            
         }
 
         public void updateCbSupplier()
@@ -62,86 +70,7 @@ namespace BelajarCRUDWPF
             cbSupplier.ItemsSource = con.Suppliers.ToList();
         }
 
-        private void btnInsertItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtNameItem.Text == "" || txtPriceItem.Text == "" || txtStockItem.Text == "" || cbSupplier.Text == "")
-            {
-                MessageBox.Show("Please fill name field and address field");
-            }
-            else
-            {
-                if (Regex.IsMatch(txtNameItem.Text, "[^a-zA-Z0-9]"))
-                {
-                    MessageBox.Show("Format item name is wrong");
-                }
-                else
-                {
-                    var iPrice = Convert.ToInt32(txtPriceItem.Text);
-                    var iStock = Convert.ToInt32(txtStockItem.Text);
-                    var get_supplier_id = con.Suppliers.Where(si => si.Id == idSup).FirstOrDefault();
-                    var input = new Item(txtNameItem.Text, iPrice, iStock, get_supplier_id);
-                    con.Items.Add(input);
-                    con.SaveChanges();
-                    MessageBox.Show("Item has been inserted");
-                    txtIdItem.Text = "";
-                    txtNameItem.Text = "";
-                    txtPriceItem.Text = "";
-                    txtStockItem.Text = "";
-                    tblItem.ItemsSource = con.Items.ToList();
-                }
-            }
-        }
-
-        private void btnUpdateItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtNameItem.Text == "" || txtPriceItem.Text == "" || txtStockItem.Text == "" || cbSupplier.Text == "")
-            {
-                MessageBox.Show("Please fill all field");
-            }
-            else
-            {
-                int item_id = Convert.ToInt32(txtIdItem.Text);
-                var cek_item_id = con.Items.Where(s => s.Id == item_id).FirstOrDefault();
-                cek_item_id.Name = txtNameItem.Text;
-                cek_item_id.Price = Convert.ToInt32(txtPriceItem.Text);
-                cek_item_id.Stock = Convert.ToInt32(txtStockItem.Text);
-                idSup = Convert.ToInt32(cbSupplier.SelectedValue.ToString());
-                var get_supplier_id = con.Suppliers.Where(si => si.Id == idSup).FirstOrDefault();
-                cek_item_id.Supplier = get_supplier_id;
-                var update = con.SaveChanges();
-                MessageBox.Show(update + " data has been updated");
-                txtIdItem.Text = "";
-                txtNameItem.Text = "";
-                txtPriceItem.Text = "";
-                txtStockItem.Text = "";
-                tblItem.ItemsSource = con.Items.ToList();
-                cbSupplier.ItemsSource = con.Suppliers.ToList();
-            }
-        }
-
-        private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult delConf = MessageBox.Show("Are you sure delete this data?", "Delete data", MessageBoxButton.YesNo);
-            switch (delConf)
-            {
-                case MessageBoxResult.Yes:
-                    int delete_item = Convert.ToInt32(txtIdItem.Text);
-                    var cek_item_id = con.Items.Where(s => s.Id == delete_item).FirstOrDefault();
-                    con.Items.Remove(cek_item_id);
-                    var delete = con.SaveChanges();
-                    MessageBox.Show(delete + " data has been deleted");
-                    txtIdItem.Text = "";
-                    txtNameItem.Text = "";
-                    txtPriceItem.Text = "";
-                    txtStockItem.Text = "";
-                    tblItem.ItemsSource = con.Items.ToList();
-                    cbSupplier.ItemsSource = con.Suppliers.ToList();
-                    break;
-                case MessageBoxResult.No:
-
-                    break;
-            }
-        }
+        
 
         private void tblItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -163,6 +92,105 @@ namespace BelajarCRUDWPF
             {
 
             }
-        } 
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            emptyFields();
+        }
+
+        public void emptyFields()
+        {
+            txtIdItem.Text = "";
+            txtNameItem.Text = "";
+            txtPriceItem.Text = "";
+            txtStockItem.Text = "";
+            cbSupplier.SelectedIndex = -1;
+        }
+
+        private void btnDeleteRow_Click(object sender, RoutedEventArgs e)
+        {
+            var data = tblItem.SelectedItem;
+            emptyFields();
+            int id = Convert.ToInt32((tblItem.SelectedCells[0].Column.GetCellContent(data) as TextBlock).Text);
+            var rowItems = con.Items.Where(s => s.Id == id).FirstOrDefault();
+            con.Items.Remove(rowItems);
+            var update = con.SaveChanges();
+            MessageBox.Show(update + " Data has been deleted");
+            tblItem.ItemsSource = con.Items.ToList();
+        }
+
+        private void btnSearchItem_Click(object sender, RoutedEventArgs e)
+        {
+            string search = txtSearchItem.Text;
+            List<Item> result = new List<Item>();
+            List<Item> table = con.Items.ToList();
+
+            if (txtSearchItem == null)
+            {
+                tblItem.ItemsSource = con.Suppliers.ToList();
+            }
+            else
+            {
+                foreach (Item row in table)
+                {
+                    if (row.Id.ToString().Contains(search.ToLower()) || row.Name.ToLower().Contains(search.ToLower()) 
+                        || row.Price.ToString().ToLower().Contains(search.ToLower())
+                        || row.Stock.ToString().ToLower().Contains(search.ToLower()) 
+                        || row.Supplier.Name.ToLower().Contains(search.ToLower()))
+                    {
+                        result.Add(row);
+                    }
+                }
+                tblItem.ItemsSource = result.ToList();
+            }
+        }
+
+        private void btnSaveItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtNameItem.Text == "") { MessageBox.Show("Please input field Name Item"); txtNameItem.Focus(); }
+            else if (txtPriceItem.Text == "") { MessageBox.Show("Please input field Price Item"); txtPriceItem.Focus(); }
+            else if (txtStockItem.Text == "") { MessageBox.Show("Please input field Stock Item"); txtStockItem.Focus(); }
+            else if (cbSupplier.SelectedIndex == -1) { MessageBox.Show("Please input Supplier"); cbSupplier.Focus(); }
+            else
+            {
+                if (Regex.IsMatch(txtNameItem.Text, "[^a-zA-Z0-9 ]")) //cek name item
+                {
+                    MessageBox.Show("Format Item Name is wrong");
+                    txtNameItem.Focus();
+                }
+                else
+                {
+                    if (txtIdItem.Text == "") //insert data
+                    {
+                        var iPrice = Convert.ToInt32(txtPriceItem.Text);
+                        var iStock = Convert.ToInt32(txtStockItem.Text);
+                        var get_supplier_id = con.Suppliers.Where(si => si.Id == idSup).FirstOrDefault();
+                        var input = new Item(txtNameItem.Text, iPrice, iStock, get_supplier_id);
+                        con.Items.Add(input);
+                        var update = con.SaveChanges();
+                        MessageBox.Show(update + " Data has been inserted");
+                        emptyFields();
+                        tblItem.ItemsSource = con.Items.ToList();
+                    }
+                    else //update data
+                    {
+                        int item_id = Convert.ToInt32(txtIdItem.Text);
+                        var cek_item_id = con.Items.Where(s => s.Id == item_id).FirstOrDefault();
+                        cek_item_id.Name = txtNameItem.Text;
+                        cek_item_id.Price = Convert.ToInt32(txtPriceItem.Text);
+                        cek_item_id.Stock = Convert.ToInt32(txtStockItem.Text);
+                        idSup = Convert.ToInt32(cbSupplier.SelectedValue.ToString());
+                        var get_supplier_id = con.Suppliers.Where(si => si.Id == idSup).FirstOrDefault();
+                        cek_item_id.Supplier = get_supplier_id;
+                        var update = con.SaveChanges();
+                        MessageBox.Show(update + " Data has been updated");
+                        emptyFields();
+                        tblItem.ItemsSource = con.Items.ToList();
+                        cbSupplier.ItemsSource = con.Suppliers.ToList();
+                    }
+                }
+            }         
+        }
     }
 }

@@ -5,30 +5,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BelajarCRUDWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="571" d:DesignWidth="994">
+             d:DesignHeight="571" d:DesignWidth="533">
     <Grid>
-        <TextBox x:Name="txtIdItem" IsEnabled="False" TextChanged="txtIdItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="114,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289" AutomationProperties.HelpText="Id"/>
-        <TextBox x:Name="txtStockItem" TextChanged="txtStockItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="114,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
-        <TextBox x:Name="txtPriceItem" TextChanged="txtPriceItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="114,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
-        <TextBox x:Name="txtNameItem" TextChanged="txtNameItem_TextChanged" HorizontalAlignment="Left" Height="24" Margin="114,176,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
-        <ComboBox x:Name="cbSupplier" ItemsSource="{Binding Suppliers}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionChanged="cbSupplier_SelectionChanged"  HorizontalAlignment="Left" Margin="114,401,0,0" VerticalAlignment="Top" Width="283"/>
-        <Button x:Name="btnInsertItem" Click="btnInsertItem_Click" Content="Insert" HorizontalAlignment="Left" Margin="114,462,0,0" VerticalAlignment="Top" Width="125"/>
-        <Button x:Name="btnUpdateItem" Click="btnUpdateItem_Click" Content="Update" HorizontalAlignment="Left" Margin="273,462,0,0" VerticalAlignment="Top" Width="124"/>
-        <Button x:Name="btnDeleteItem" Click="btnDeleteItem_Click" Content="Delete" HorizontalAlignment="Left" Margin="454,462,0,0" VerticalAlignment="Top" Width="434"/>
+        <TextBox x:Name="txtIdItem" IsEnabled="False" TextChanged="txtIdItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="85,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" AutomationProperties.HelpText="Id"/>
+        <TextBox x:Name="txtStockItem" TextChanged="txtStockItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="288,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtPriceItem" TextChanged="txtPriceItem_TextChanged" HorizontalAlignment="Left" Height="23" Margin="288,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtNameItem" TextChanged="txtNameItem_TextChanged" HorizontalAlignment="Left" Height="24" Margin="85,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <ComboBox x:Name="cbSupplier" ItemsSource="{Binding Suppliers}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectionChanged="cbSupplier_SelectionChanged"  HorizontalAlignment="Left" Margin="85,198,0,0" VerticalAlignment="Top" Width="151"/>
         <DataGrid x:Name="tblItem" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="tblItem_SelectionChanged" 
-                  HorizontalAlignment="Left" Height="352" Margin="454,77,0,0" VerticalAlignment="Top" Width="434">
+                  HorizontalAlignment="Left" Height="250
+                  " Margin="10,311,0,0" VerticalAlignment="Top" Width="513">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name Id" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Name Item" Binding="{Binding Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Price Item" Binding="{Binding Price}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Stock Item" Binding="{Binding Stock}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier.Name}"></DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnDeleteRow" Click="btnDeleteRow_Click" Content="Delete"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Id" HorizontalAlignment="Left" Margin="114,77,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.889,0.625"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="114,147,0,0" VerticalAlignment="Top"/>
-        <Label Content="Price" HorizontalAlignment="Left" Margin="114,222,0,0" VerticalAlignment="Top"/>
-        <Label Content="Stock" HorizontalAlignment="Left" Margin="114,296,0,0" VerticalAlignment="Top"/>
-        <Label Content="Supplier" HorizontalAlignment="Left" Margin="114,372,0,0" VerticalAlignment="Top"/>
+        <Label Content="Id" HorizontalAlignment="Left" Margin="85,32,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.889,0.625"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="85,102,0,0" VerticalAlignment="Top"/>
+        <Label Content="Price" HorizontalAlignment="Left" Margin="288,32,0,0" VerticalAlignment="Top"/>
+        <Label Content="Stock" HorizontalAlignment="Left" Margin="288,102,0,0" VerticalAlignment="Top"/>
+        <Label Content="Supplier" HorizontalAlignment="Left" Margin="85,174,0,0" VerticalAlignment="Top"/>
+        <Button Content="Clear" x:Name="btnRefresh" Click="btnRefresh_Click" HorizontalAlignment="Left" Margin="288,206,0,0" VerticalAlignment="Top" Width="151"/>
+        <Button x:Name="btnSearchItem" Click="btnSearchItem_Click" Content="Search" HorizontalAlignment="Left" Margin="349,265,0,0" VerticalAlignment="Top" Width="90"/>
+        <TextBox x:Name="txtSearchItem" HorizontalAlignment="Left" Height="32" Margin="85,265,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240"/>
+        <Button x:Name="btnSaveItem" Click="btnSaveItem_Click" Content="Save" HorizontalAlignment="Left" Margin="288,167,0,0" VerticalAlignment="Top" Width="151"/>
     </Grid>
 </UserControl>

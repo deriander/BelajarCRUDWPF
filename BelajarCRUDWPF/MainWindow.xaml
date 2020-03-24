@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:BelajarCRUDWPF"
-        mc:Ignorable="d" Height="600" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        mc:Ignorable="d" Height="600" Width="533" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
         <Storyboard x:Key="CloseMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">

@@ -2,32 +2,42 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:BelajarCRUDWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="571" d:DesignWidth="994">
+             d:DesignHeight="571" d:DesignWidth="533">
     <Grid>
-        <TextBox x:Name="txtIdSupplier" TextChanged="txtIdSupplier_TextChanged" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="104,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
-        <TextBox x:Name="txtNameSupplier" TextChanged="txtNameSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,267,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
-        <TextBox x:Name="txtAddressSupplier" TextChanged="txtAddressSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,339,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
-        <TextBox x:Name="txtEmailSupplier" TextChanged="txtEmailSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="104,413,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
-        <Button x:Name="btnDeleteSupplier" Click="btnDeleteSupplier_Click" Content="Delete" HorizontalAlignment="Left" Margin="466,462,0,0" VerticalAlignment="Top" Width="429"/>
-        <Button x:Name="btnUpdateSupplier" Click="btnUpdateSupplier_Click" Content="Update" HorizontalAlignment="Left" Margin="284,462,0,0" VerticalAlignment="Top" Width="140"/>
-        <Button x:Name="btnInsertSupplier" Click="btnInsertSupplier_Click" Content="Insert" HorizontalAlignment="Left" Margin="100,462,0,0" VerticalAlignment="Top" Width="140"/>
+        <TextBox x:Name="txtIdSupplier" TextChanged="txtIdSupplier_TextChanged" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="93,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtNameSupplier" TextChanged="txtNameSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="280,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtAddressSupplier" TextChanged="txtAddressSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="93,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtEmailSupplier" TextChanged="txtEmailSupplier_TextChanged" HorizontalAlignment="Left" Height="23" Margin="280,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
         <DataGrid x:Name="tblSupplier" SelectionChanged="tblSupplier_SelectionChanged" 
                   SelectedItem="selectGrid" AutoGenerateColumns="False" IsReadOnly="True" 
-                  HorizontalAlignment="Left" Height="365" Margin="466,76,0,0" VerticalAlignment="Top" Width="429">
+                  HorizontalAlignment="Left" Height="251" Margin="10,310,0,0" VerticalAlignment="Top" Width="513">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}"></DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnDeleteRow" Click="btnDeleteRow_Click" Content="Delete">
+
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Id" HorizontalAlignment="Left" Margin="104,169,0,0" VerticalAlignment="Top"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="100,238,0,0" VerticalAlignment="Top"/>
-        <Label Content="Address" HorizontalAlignment="Left" Margin="102,310,0,0" VerticalAlignment="Top"/>
-        <Label Content="Email" HorizontalAlignment="Left" Margin="104,385,0,0" VerticalAlignment="Top"/>
-        <Label Content="Admin" HorizontalAlignment="Left" Margin="102,76,0,0" VerticalAlignment="Top" FontSize="48"/>
+        <Label Content="Id" HorizontalAlignment="Left" Margin="93,52,0,0" VerticalAlignment="Top"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="284,52,0,0" VerticalAlignment="Top"/>
+        <Label Content="Address" HorizontalAlignment="Left" Margin="93,109,0,0" VerticalAlignment="Top"/>
+        <Label Content="Email" HorizontalAlignment="Left" Margin="284,109,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnRefresh" Click="btnRefresh_Click" Content="Clear" HorizontalAlignment="Left" Margin="93,182,0,0" VerticalAlignment="Top" Width="151"/>
+        <TextBox x:Name="txtSearchSupplier" HorizontalAlignment="Left" Height="32" Margin="93,265,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="173"/>
+        <Button x:Name="btnSearchSupplier" Click="btnSearchSupplier_Click" Content="Search" HorizontalAlignment="Left" Margin="284,265,0,0" VerticalAlignment="Top" Width="151"/>
+        <Button x:Name="btnSaveSupplier" Click="btnSaveSupplier_Click" Content="Save" HorizontalAlignment="Left" Margin="284,182,0,0" VerticalAlignment="Top" Width="151"/>
     </Grid>
 </UserControl>

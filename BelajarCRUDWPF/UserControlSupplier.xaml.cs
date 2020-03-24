@@ -109,92 +109,6 @@ namespace BelajarCRUDWPF
 
             }
         }
-
-        private void btnInsertSupplier_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtNameSupplier.Text == "" || txtAddressSupplier.Text == "" || txtEmailSupplier.Text == "")
-            {
-                MessageBox.Show("Please fill name field and address field");
-            }
-            else
-            {
-                if (emailValidation(txtEmailSupplier.Text) == false)
-                {
-                    MessageBox.Show("Please enter a valid email");
-                    txtEmailSupplier.Focus();
-                }
-                else
-                {
-                    //input table supplier
-                    string password = System.Guid.NewGuid().ToString();
-                    var input = new Supplier(txtNameSupplier.Text, txtAddressSupplier.Text, txtEmailSupplier.Text, password);
-                    con.Suppliers.Add(input);
-                    con.SaveChanges(); //save
-
-                    //input table role
-                    var cek_admin_id = con.Suppliers.Where(s => s.Email == txtEmailSupplier.Text).FirstOrDefault();
-                    var inputRole = new Role("Member", cek_admin_id);
-                    con.Roles.Add(inputRole);
-                    var insert = con.SaveChanges(); //save
-
-                    sendPasswordToEmail(txtEmailSupplier.Text, password, txtNameSupplier.Text); //send to email
-                    MessageBox.Show(insert + " data has been inserted & password has been send to email");
-                    txtNameSupplier.Text = "";
-                    txtAddressSupplier.Text = "";
-                    txtIdSupplier.Text = "";
-                    txtEmailSupplier.Text = "";
-                    tblSupplier.ItemsSource = con.Suppliers.ToList();
-                }
-            }
-        }
-
-        private void btnUpdateSupplier_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtNameSupplier.Text == "" || txtAddressSupplier.Text == "" || txtIdSupplier.Text == "" || txtEmailSupplier.Text == "")
-            {
-                MessageBox.Show("Please fill all field");
-            }
-            else
-            {
-                int supply_id = Convert.ToInt32(txtIdSupplier.Text);
-                var cek_supply_id = con.Suppliers.Where(s => s.Id == supply_id).FirstOrDefault();
-                cek_supply_id.Name = txtNameSupplier.Text;
-                cek_supply_id.Address = txtAddressSupplier.Text;
-                cek_supply_id.Email = txtEmailSupplier.Text;
-                var update = con.SaveChanges();
-                MessageBox.Show(update + " data has been updated");
-                txtIdSupplier.Text = "";
-                txtNameSupplier.Text = "";
-                txtAddressSupplier.Text = "";
-                txtEmailSupplier.Text = "";
-                tblSupplier.ItemsSource = con.Suppliers.ToList();
-                
-            }
-        }
-
-        private void btnDeleteSupplier_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult delConf = MessageBox.Show("Are you sure delete this data?", "Delete data", MessageBoxButton.YesNo);
-            switch (delConf)
-            {
-                case MessageBoxResult.Yes:
-                    int delete_supply = Convert.ToInt32(txtIdSupplier.Text);
-                    var cek_supply_id = con.Suppliers.Where(s => s.Id == delete_supply).FirstOrDefault();
-                    con.Suppliers.Remove(cek_supply_id);
-                    var delete = con.SaveChanges();
-                    MessageBox.Show(delete + " data has been deleted");
-                    txtIdSupplier.Text = "";
-                    txtNameSupplier.Text = "";
-                    txtAddressSupplier.Text = "";
-                    txtEmailSupplier.Text = "";
-                    tblSupplier.ItemsSource = con.Suppliers.ToList();
-                    break;
-                case MessageBoxResult.No:
-
-                    break;
-            }
-        }
-
         
         private void tblSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -213,6 +127,109 @@ namespace BelajarCRUDWPF
             catch
             {
 
+            }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            emptyFields();
+        }
+
+        public void emptyFields()
+        {
+            txtIdSupplier.Text = "";
+            txtNameSupplier.Text = "";
+            txtAddressSupplier.Text = "";
+            txtEmailSupplier.Text = "";
+        }
+
+        private void btnSearchSupplier_Click(object sender, RoutedEventArgs e)
+        {
+            string search = txtSearchSupplier.Text;
+            List<Supplier> result = new List<Supplier>();
+            List<Supplier> table = con.Suppliers.ToList();
+
+            if (txtSearchSupplier == null)
+            {
+                tblSupplier.ItemsSource = con.Suppliers.ToList();
+            }
+            else
+            {
+                foreach (Supplier row in table)
+                {
+                    if (row.Id.ToString().Contains(search.ToLower()) || row.Name.ToLower().Contains(search.ToLower()) 
+                        || row.Address.ToLower().Contains(search.ToLower()) || row.Email.ToLower().Contains(search.ToLower()))
+                    {
+                        result.Add(row);
+                    }
+                }
+                tblSupplier.ItemsSource = result.ToList();
+            }  
+        }
+
+        private void btnDeleteRow_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult delConf = MessageBox.Show("Are you sure delete this data?", "Delete data", MessageBoxButton.YesNo);
+            switch (delConf)
+            {
+                case MessageBoxResult.Yes:
+                    var data = tblSupplier.SelectedItem;
+                    emptyFields();
+                    int id = Convert.ToInt32((tblSupplier.SelectedCells[0].Column.GetCellContent(data) as TextBlock).Text);
+                    var rowSupplier = con.Suppliers.Where(s => s.Id == id).FirstOrDefault();
+                    var rowRole = con.Roles.Where(s => s.Supplier.Id == rowSupplier.Id).FirstOrDefault();
+                    con.Roles.Remove(rowRole);
+                    con.Suppliers.Remove(rowSupplier);
+                    var update = con.SaveChanges();
+                    MessageBox.Show(update + " Data has been deleted");
+                    emptyFields();
+                    tblSupplier.ItemsSource = con.Suppliers.ToList();
+                    break;
+                case MessageBoxResult.No:
+
+                    break;
+            }
+        }
+            
+
+        private void btnSaveSupplier_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtNameSupplier.Text == "") { MessageBox.Show("Please input field Name Supplier"); txtNameSupplier.Focus(); }
+            else if (txtAddressSupplier.Text == "") { MessageBox.Show("Please input field Address Suplier"); txtAddressSupplier.Focus(); }
+            else if (txtEmailSupplier.Text == "") { MessageBox.Show("Please input field Email Supplier"); txtEmailSupplier.Focus(); }
+            else
+            {
+                if (txtIdSupplier.Text == "")
+                {
+                    //input table supplier
+                    string password = System.Guid.NewGuid().ToString();
+                    var input = new Supplier(txtNameSupplier.Text, txtAddressSupplier.Text, txtEmailSupplier.Text, password);
+                    con.Suppliers.Add(input);
+                    con.SaveChanges(); //save
+
+                    //input table role
+                    var cek_admin_id = con.Suppliers.Where(s => s.Email == txtEmailSupplier.Text).FirstOrDefault();
+                    var inputRole = new Role("Member", cek_admin_id);
+                    con.Roles.Add(inputRole);
+                    var update = con.SaveChanges(); //save
+
+                    sendPasswordToEmail(txtEmailSupplier.Text, password, txtNameSupplier.Text); //send to email
+                    MessageBox.Show(update + " Data has been inserted & password has been send to email");
+                    emptyFields();
+                    tblSupplier.ItemsSource = con.Suppliers.ToList();
+                }
+                else
+                {
+                    int supply_id = Convert.ToInt32(txtIdSupplier.Text);
+                    var cek_supply_id = con.Suppliers.Where(s => s.Id == supply_id).FirstOrDefault();
+                    cek_supply_id.Name = txtNameSupplier.Text;
+                    cek_supply_id.Address = txtAddressSupplier.Text;
+                    cek_supply_id.Email = txtEmailSupplier.Text;
+                    var update = con.SaveChanges();
+                    MessageBox.Show(update + " Data has been updated");
+                    emptyFields();
+                    tblSupplier.ItemsSource = con.Suppliers.ToList();
+                }
             }
         }
     }
